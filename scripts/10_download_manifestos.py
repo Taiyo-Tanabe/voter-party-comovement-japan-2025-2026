@@ -1,8 +1,8 @@
 """manifesto_sources.csv の url から公約をダウンロードして file の場所に保存する。
 
 使い方(プロジェクトのフォルダで):
-    python scripts/00_download_manifestos.py          # まだ無いファイルだけ取る
-    python scripts/00_download_manifestos.py --force  # 全部取り直す
+    python scripts/10_download_manifestos.py          # まだ無いファイルだけ取る
+    python scripts/10_download_manifestos.py --force  # 全部取り直す
 """
 import argparse
 import time
