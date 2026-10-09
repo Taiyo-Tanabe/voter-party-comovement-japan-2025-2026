@@ -11,8 +11,8 @@ election,party,title,url,accessed,file,note
 2025_upper,国民,政策パンフレット2025,https://new-kokumin.jp/file/DPFP-PolicyCollection2025.pdf,2026-10-08,data/raw/manifestos/2025_upper/dpfp_full.pdf,政策集
 2025_upper,共産,2025年参議院選挙基本政策(パンフ版),https://www.jcp.or.jp/cms/wp-content/uploads/2025/06/202506_sanin_seisaku.pdf,2026-10-08,data/raw/manifestos/2025_upper/jcp.pdf,重点公約
 2025_upper,れいわ,マニフェスト,https://san27.reiwa-shinsengumi.com/wp-content/themes/san27/assets/pdf/reiwasan202507manifest.pdf,2026-10-08,data/raw/manifestos/2025_upper/reiwa.pdf,重点公約・画像PDF(OCR要)
-2025_upper,参政,第27回参議院選挙「これ以上日本を壊すな!」,https://partsa.nikkei.com/parts/ds/sanin2025/pdf/sansei.pdf,2026-10-08,data/raw/manifestos/2025_upper/sanseito.pdf,重点公約・日経掲載PDF(公式ページは404)・画像PDF(OCR要)・URLは日経の命名規則から推測→開いて参政の公約か確認
-2025_upper,保守,日本保守党の重点政策項目,https://partsa.nikkei.com/parts/ds/sanin2025/pdf/hoshu.pdf,2026-10-08,data/raw/manifestos/2025_upper/hoshu.pdf,重点公約・日経掲載PDF(公式ページは2026/8改訂済み)
+2025_upper,参政,日本人ファースト 3つの柱と9の政策(DIYタイムズ vol.16 掲載),https://partsa.nikkei.com/parts/ds/sanin2025/pdf/sansei.pdf,2026-10-08,data/raw/manifestos/2025_upper/sanseito.pdf,重点公約・日経掲載PDF(公式ページは404)・画像PDF(OCR要)・2ページ: 1枚目は宣伝チラシ、2枚目が重点政策→2枚目だけ使う。中身を目で確認済み
+2025_upper,保守,日本保守党の重点政策項目,https://partsa.nikkei.com/parts/ds/sanin2025/pdf/hoshu.pdf,2026-10-08,data/raw/manifestos/2025_upper/hoshu.pdf,重点公約・日経掲載PDF(公式ページは2026/8改訂済み)・文字あり・「2025/05/15 改訂」版=参院選前の版と確認
 2025_upper,社民,2025参院選 選挙公約,https://sdp.or.jp/27th-hce-sdp/assets/pdf/2025_hce_manifesto_sdp.pdf,2026-10-08,data/raw/manifestos/2025_upper/sdp.pdf,重点公約
 2025_upper,みらい,要約版マニフェスト v1.0,https://tibsocpjqvxxipszbwui.supabase.co/storage/v1/object/public/assets/manifestos/teammirai_manifest_summary_v1.0.pdf,2026-10-08,data/raw/manifestos/2025_upper/mirai.pdf,重点公約
 2025_upper,みらい,テーマ別マニフェスト統合版,https://tibsocpjqvxxipszbwui.supabase.co/storage/v1/object/public/assets/manifestos/teammirai_manifest_all.pdf,2026-10-08,data/raw/manifestos/2025_upper/mirai_full.pdf,政策集
@@ -24,7 +24,7 @@ election,party,title,url,accessed,file,note
 2026_lower,国民,政策パンフレット2026,https://new-kokumin.jp/wp-content/uploads/2026/01/e3fc1ec4b1097f4718f07cb29d99e1d3.pdf,2026-10-08,data/raw/manifestos/2026_lower/dpfp_full.pdf,政策集
 2026_lower,共産,2026総選挙政策パンフ,https://www.jcp.or.jp/cms/wp-content/uploads/2026/01/202601_sousenkyo_seisaku.pdf,2026-10-08,data/raw/manifestos/2026_lower/jcp.pdf,重点公約
 2026_lower,れいわ,マニフェスト,https://shu51.reiwa-shinsengumi.com/wp-content/uploads/2026/01/2026-Reiwashinsengumi-manifest.pdf,2026-10-08,data/raw/manifestos/2026_lower/reiwa.pdf,重点公約・画像PDFの可能性
-2026_lower,参政,第51回衆議院議員選挙「ひとりひとりが日本!I am JAPAN」,https://partsa.nikkei.com/parts/ds/shuin2026/pdf/sansei_b.pdf,2026-10-08,data/raw/manifestos/2026_lower/sanseito.pdf,重点公約・日経掲載PDF(公式ページはトップに転送)・3本柱9項目の要約版。公式の当時の版: Wayback 2026-02-11 https://web.archive.org/web/20260211013557/https://sanseito.jp/51th_hor_election/
-2026_lower,保守,日本保守党の重点政策項目,https://partsa.nikkei.com/parts/ds/shuin2026/pdf/hoshu.pdf,2026-10-08,data/raw/manifestos/2026_lower/hoshu.pdf,重点公約・日経掲載PDF・画像PDF(OCR要)・URLは日経の命名規則から推測→開いて保守の公約か確認
+2026_lower,参政,第51回衆議院議員選挙「ひとりひとりが日本!I am JAPAN」,https://partsa.nikkei.com/parts/ds/shuin2026/pdf/sansei_b.pdf,2026-10-08,data/raw/manifestos/2026_lower/sanseito.pdf,重点公約・文字あり・日経掲載PDF(公式ページはトップに転送)・3本柱9項目の要約版。公式の当時の版: Wayback 2026-02-11 https://web.archive.org/web/20260211013557/https://sanseito.jp/51th_hor_election/
+2026_lower,保守,日本保守党の重点政策項目,https://partsa.nikkei.com/parts/ds/shuin2026/pdf/hoshu.pdf,2026-10-08,data/raw/manifestos/2026_lower/hoshu.pdf,重点公約・日経掲載PDF・画像PDF(OCR要)・見出しは「2025.05 改訂」だが赤字の追加・変更あり(2026年向けの改訂とみられる)。中身を目で確認済み
 2026_lower,社民,衆院選挙公約2026,https://sdp.or.jp/wp-content/uploads/2026/01/71f84bd2f061b86553936e7a1a83f376.pdf,2026-10-08,data/raw/manifestos/2026_lower/sdp.pdf,重点公約・画像PDF(OCR要)
 2026_lower,みらい,チームみらいの公約,https://team-mir.ai/election/shugiin-2026,2026-10-08,data/raw/manifestos/2026_lower/mirai.html,重点公約・HTML・選挙後に更新→WARPで当時の版を確認
