@@ -11,7 +11,7 @@ election,party,title,url,accessed,file,note
 2025_upper,国民,政策パンフレット2025,https://new-kokumin.jp/file/DPFP-PolicyCollection2025.pdf,2026-10-08,data/raw/manifestos/2025_upper/dpfp_full.pdf,政策集
 2025_upper,共産,2025年参議院選挙基本政策(パンフ版),https://www.jcp.or.jp/cms/wp-content/uploads/2025/06/202506_sanin_seisaku.pdf,2026-10-08,data/raw/manifestos/2025_upper/jcp.pdf,重点公約
 2025_upper,れいわ,マニフェスト,https://san27.reiwa-shinsengumi.com/wp-content/themes/san27/assets/pdf/reiwasan202507manifest.pdf,2026-10-08,data/raw/manifestos/2025_upper/reiwa.pdf,重点公約・画像PDF(OCR要)
-2025_upper,参政,日本人ファースト 3つの柱と9の政策(DIYタイムズ vol.16 掲載),https://partsa.nikkei.com/parts/ds/sanin2025/pdf/sansei.pdf,2026-10-08,data/raw/manifestos/2025_upper/sanseito.pdf,重点公約・日経掲載PDF(公式ページは404)・画像PDF(OCR要)・2ページ: 1枚目は宣伝チラシ、2枚目が重点政策→2枚目だけ使う。中身を目で確認済み
+2025_upper,参政,日本人ファースト 3つの柱と9の政策(DIYタイムズ vol.16 掲載),https://partsa.nikkei.com/parts/ds/sanin2025/pdf/sansei.pdf,2026-10-08,data/raw/manifestos/2025_upper/sanseito.pdf,重点公約・日経掲載PDF(公式ページは404)・画像PDF(OCR要)・2ページ: 1枚目は機関紙の表紙(候補予定者一覧・「政権与党の七つの大罪」として政策の立場を7項目)、2枚目が重点政策「3つの柱と9の政策」。両方 OCR し、1枚目を分析に使うかは分類の段階で全党共通の決まりで決める。中身を目で確認済み
 2025_upper,保守,日本保守党の重点政策項目,https://partsa.nikkei.com/parts/ds/sanin2025/pdf/hoshu.pdf,2026-10-08,data/raw/manifestos/2025_upper/hoshu.pdf,重点公約・日経掲載PDF(公式ページは2026/8改訂済み)・文字あり・「2025/05/15 改訂」版=参院選前の版と確認
 2025_upper,社民,2025参院選 選挙公約,https://sdp.or.jp/27th-hce-sdp/assets/pdf/2025_hce_manifesto_sdp.pdf,2026-10-08,data/raw/manifestos/2025_upper/sdp.pdf,重点公約
 2025_upper,みらい,要約版マニフェスト v1.0,https://tibsocpjqvxxipszbwui.supabase.co/storage/v1/object/public/assets/manifestos/teammirai_manifest_summary_v1.0.pdf,2026-10-08,data/raw/manifestos/2025_upper/mirai.pdf,重点公約
