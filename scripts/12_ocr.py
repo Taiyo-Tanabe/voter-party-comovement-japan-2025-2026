@@ -58,7 +58,15 @@ OCR_DOCS = {
     ("2026_lower", "ishin"): "whole",    # スライド。比較でページ全体を縮小して渡し、間違いゼロを確認済み
     ("2026_lower", "reiwa"): "tile",
     ("2026_lower", "sdp"): "tile",
+    # 国民2026 は特設サイトに政策の文字がないので、政策パンフレットの p2〜p8 を重点公約にする(11_extract_text.py)。
+    # 右から左に読む冊子の見開き。右のページ → 左のページの順に、それぞれ切らずに縮めて渡す(spread_rtl)。
+    # 見開きを丸ごと渡すと 0.52倍まで縮み、読み間違い(p8「一つの規制」→「二つ」)と考えすぎの打ち切り(p6 が空)が起きた
+    ("2026_lower", "dpfp_full"): "spread_rtl",
 }
+# spread_rtl で左右に分ける位置。ふつうは真ん中(折り目)。国民2026 の p7・p8 は縦書きの本文の枠が折り目より左に
+# はみ出し(枠の左端 約 x=2100)、真ん中で切ると見えない続きを Claude が作文した(p7「…規制法の推進」、
+# p8「待〓市…国会改革を推進」)→ 枠の左端の手前で切る(画像を見て手で決めた値。左側は写真とページ番号だけ)
+RTL_CUT = {("2026_lower", "dpfp_full", 7): 2040, ("2026_lower", "dpfp_full", 8): 2040}
 # OCR しないページ(今は無し)。参政2025 の1枚目は機関紙の表紙だが、与党批判の形で政策の立場を
 # 7項目挙げているので読んでおく。分析に使うかは分類の段階で全党共通の決まりで決める(manifesto_sources.csv の note)
 SKIP_PAGES = {}
@@ -154,10 +162,13 @@ def render(election, doc, page):
     return Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
 
 
-def make_tiles(img, mode):
+def make_tiles(img, mode, cut=None):
     W, H = img.size
     if mode == "whole":
         return [(0, 0, W, H, max(W, H) > LIMIT)]
+    if mode == "spread_rtl":                         # 右から左に読む見開き: 右 → 左の順。縦書きの列を切らないよう、それぞれ切らずに縮めて渡す
+        c = cut or W // 2
+        return [(c, 0, W, H, max(W - c, H) > LIMIT), (0, 0, c, H, max(c, H) > LIMIT)]
     m = ink_mask(img)
     if mode == "spread":                             # 見開き: まず折り目(真ん中)で左右のページに分ける
         return split(m, (0, 0, W // 2, H)) + split(m, (W // 2, 0, W, H))
@@ -228,7 +239,7 @@ def main():
     try:
         for r in target.itertuples():
             img = render(r.election, r.doc, r.page)
-            tiles = make_tiles(img, OCR_DOCS[(r.election, r.doc)])
+            tiles = make_tiles(img, OCR_DOCS[(r.election, r.doc)], RTL_CUT.get((r.election, r.doc, r.page)))
             n_scaled = sum(t[4] for t in tiles)
             print(f"{r.election} {r.doc:<9} p{r.page:<3} {img.width}x{img.height} → タイル {len(tiles)}"
                   + (f"(うち縮小 {n_scaled})" if n_scaled else ""))

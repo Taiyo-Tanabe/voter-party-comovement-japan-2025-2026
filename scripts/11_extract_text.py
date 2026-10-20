@@ -38,6 +38,13 @@ HEADER_MAX_LEN = 60     # ただし長い行は本文の可能性があるので
 PAGE_NUM = re.compile(r"^[\d０-９\-–—/／ ]{1,7}$")   # 「6」「- 6 -」「6/24」など
 WORD_CHAR = re.compile(r"[\w぀-ヿ一-鿿]")  # 文字(記号ではない)
 
+# 重点公約の例外(2026-10-20 決定)
+# 国民2026 の衆院選特設サイトは、トップの「政策」欄が canvas(JavaScript で描く絵)で、HTML に政策の文字がない
+# (取り出せるのは候補者一覧・演説の予定・応援のお願いだけ)。そこで特設サイトは分析に使わず(kind="site")、
+# 政策パンフレット2026 の p2〜p8(「国民民主党の政策2026」と「政策5本柱」)を重点公約(kind="main")とする
+KIND_OVERRIDES = {("2026_lower", "dpfp"): "site"}
+MAIN_PAGES = {("2026_lower", "dpfp_full"): range(2, 9)}
+
 
 def count_chars(s):
     return len(re.sub(r"\s", "", s))
@@ -147,6 +154,8 @@ def main():
             print(f"[ファイルなし] {r.file}  ← 10_download_manifestos.py を先に実行")
             continue
         doc = path.stem
+        kind = KIND_OVERRIDES.get((r.election, doc), doc_kind(doc))
+        main_pages = MAIN_PAGES.get((r.election, doc), ())
         raw = pdf_pages(path) if path.suffix == ".pdf" else html_pages(path)
 
         pages_lines = [drop_repeats(join_vertical(clean_lines(t))) for t in raw]
@@ -155,7 +164,8 @@ def main():
             kept = [l for l in lines if l not in headers and not PAGE_NUM.match(l)]
             text = "\n".join(kept)
             rows.append({
-                "election": r.election, "party": r.party, "doc": doc, "kind": doc_kind(doc),
+                "election": r.election, "party": r.party, "doc": doc,
+                "kind": "main" if i in main_pages else kind,
                 "source": path.suffix[1:], "page": i,
                 "text_raw": t, "text": text,
                 "n_chars": count_chars(text),
@@ -164,7 +174,8 @@ def main():
 
         d = pd.DataFrame(rows[-len(raw):])
         inv.append({
-            "election": r.election, "party": r.party, "doc": doc, "kind": doc_kind(doc),
+            "election": r.election, "party": r.party, "doc": doc, "kind": kind,
+            "main_pages": len(main_pages),
             "source": path.suffix[1:], "pages": len(raw),
             "ocr_pages": int(d["needs_ocr"].sum()),
             "chars_raw": sum(count_chars(t) for t in raw),
