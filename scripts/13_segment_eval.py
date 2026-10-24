@@ -210,10 +210,12 @@ PDF から機械的に取り出したので、紙の行の幅で文が途中で�
 _client = None
 
 
-def seg_claude(page_text, doc, key=None, force=False):
-    """Claude に「1行 = 1政策」に書き直させる。答えは CLAUDE_DIR に保存し、次からはそれを使う(--force で読み直し)"""
+def seg_claude(page_text, doc, key=None, force=False, effort=None):
+    """Claude に「1行 = 1政策」に書き直させる。答えは保存し、次からはそれを使う(--force で読み直し)。
+    effort を指定したときは、答えを別のフォルダ(claude_low など)に保存する(設定ごとに比べるため)"""
     global _client
-    out = CLAUDE_DIR / f"{key[0]}_{key[1]}_p{key[2]:03d}.txt"
+    folder = CLAUDE_DIR if effort is None else CLAUDE_DIR.with_name(f"claude_{effort}")
+    out = folder / f"{key[0]}_{key[1]}_p{key[2]:03d}.txt"
     if out.exists() and not force:
         saved = out.read_text(encoding="utf-8")
         if saved.strip():                               # 空のファイル(前に失敗した答え)は使わず、呼び直す
@@ -221,21 +223,22 @@ def seg_claude(page_text, doc, key=None, force=False):
     from llm_common import call_claude, make_client
     if _client is None:
         _client = make_client()
-    text, meta = call_claude(_client, CLAUDE_MODEL, PROMPT.format(text=page_text))
+    text, meta = call_claude(_client, CLAUDE_MODEL, PROMPT.format(text=page_text), effort=effort)
     if meta["warning"]:
         print(f"  [注意] {out.name}: {meta['warning']}")
-    print(f"  Claude {out.name}: 出力 {meta['output_tokens']}(うち考えた {meta['thinking_tokens']})トークン"
+    print(f"  Claude{'' if effort is None else '(' + effort + ')'} {out.name}: 出力 {meta['output_tokens']}(うち考えた {meta['thinking_tokens']})トークン"
           f" ${meta['cost_usd']:.3f} {meta['seconds']}秒 stop_reason={meta['stop_reason']}")
     out.parent.mkdir(parents=True, exist_ok=True)
     if not meta["warning"]:                             # 空・打ち切りの答えは保存しない(次の実行で呼び直す)
         out.write_text(text, encoding="utf-8")
-    log = CLAUDE_DIR / "calls.csv"                      # 呼んだ記録(料金・トークン・警告)
+    log = folder / "calls.csv"                          # 呼んだ記録(料金・トークン・警告)
     row = pd.DataFrame([{"file": out.name, **meta}])
     row.to_csv(log, mode="a", header=not log.exists(), index=False, encoding="utf-8")
     return parse_items(text)
 
 
-METHODS = {"lines": seg_lines, "rule": seg_rule, "claude": seg_claude}
+METHODS = {"lines": seg_lines, "rule": seg_rule, "claude": seg_claude,
+           "claude-medium": seg_claude, "claude-low": seg_claude}   # claude-○○ = effort を下げた Claude(考える量を減らして安くする)
 
 
 def main():
@@ -259,7 +262,11 @@ def main():
     for name in args.methods:
         for key, items in gold.items():
             text = pages.loc[key, "text"]
-            pred = seg_claude(text, key[1], key, args.force) if name == "claude" else METHODS[name](text, key[1])
+            if name.startswith("claude"):
+                effort = name.split("-")[1] if "-" in name else None       # "claude-low" → "low"、"claude" → None(初期値 high)
+                pred = seg_claude(text, key[1], key, args.force, effort)
+            else:
+                pred = METHODS[name](text, key[1])
             r = score(items, pred, text)
             rows.append({"method": name, "election": key[0], "doc": key[1], "page": key[2], **r})
     res = pd.DataFrame(rows)

@@ -24,13 +24,17 @@ def make_client():
     return anthropic.Anthropic()
 
 
-def call_claude(client, model, prompt, max_tokens=16000):
+def call_claude(client, model, prompt, max_tokens=16000, effort=None):
     """文章だけの指示を Claude に送り、(答えの文字列, 記録の辞書) を返す。
-    記録: stop_reason・入力/出力/考えたトークン数・料金・秒数・警告"""
+    記録: stop_reason・入力/出力/考えたトークン数・料金・秒数・警告
+    effort: "low" / "medium" / "high" など。None なら API の初期値(Sonnet 5 は high)。
+            下げると考える量(= 出力トークン = 料金)が減る"""
     t0 = time.time()
+    extra = {"output_config": {"effort": effort}} if effort else None   # SDK の版によらず送れるよう extra_body で渡す
     msg = client.messages.create(
         model=model, max_tokens=max_tokens,
         messages=[{"role": "user", "content": prompt}],
+        extra_body=extra,
     )
     text = "".join(b.text for b in msg.content if b.type == "text")
     u = msg.usage
