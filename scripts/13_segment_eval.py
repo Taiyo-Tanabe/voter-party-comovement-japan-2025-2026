@@ -210,11 +210,12 @@ PDF から機械的に取り出したので、紙の行の幅で文が途中で�
 _client = None
 
 
-def seg_claude(page_text, doc, key=None, force=False, effort=None):
+def seg_claude(page_text, doc, key=None, force=False, effort=None, base=CLAUDE_DIR):
     """Claude に「1行 = 1政策」に書き直させる。答えは保存し、次からはそれを使う(--force で読み直し)。
-    effort を指定したときは、答えを別のフォルダ(claude_low など)に保存する(設定ごとに比べるため)"""
+    effort を指定したときは、答えを別のフォルダ(claude_low など)に保存する(設定ごとに比べるため)。
+    base: 答えを保存するフォルダ(13_segment.py の本番では別のフォルダを渡す)"""
     global _client
-    folder = CLAUDE_DIR if effort is None else CLAUDE_DIR.with_name(f"claude_{effort}")
+    folder = base if effort is None else base.with_name(f"{base.name}_{effort}")
     out = folder / f"{key[0]}_{key[1]}_p{key[2]:03d}.txt"
     if out.exists() and not force:
         saved = out.read_text(encoding="utf-8")
