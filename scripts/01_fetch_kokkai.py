@@ -7,11 +7,9 @@ import argparse
 import sys
 from pathlib import Path
 
-import requests
-
 ROOT = Path(__file__).resolve().parents[1]   # scripts/ の1つ上 = プロジェクトのルート
 sys.path.insert(0, str(ROOT))
-from src.collect.kokkai import fetch_month, save_month  # noqa: E402
+from src.collect.kokkai import fetch_month, make_session, save_month  # noqa: E402
 
 OUT = ROOT / "data" / "raw" / "kokkai"
 
@@ -34,8 +32,7 @@ def main():
     p.add_argument("--force", action="store_true", help="取得済みの月も取り直す")
     args = p.parse_args()
 
-    session = requests.Session()
-    session.headers["User-Agent"] = "survey_on_party_systems (academic research)"
+    session = make_session()                     # 名乗り(User-Agent)は src/collect/kokkai.py の USER_AGENT
 
     for y, m in months(args.start, args.end):
         path = OUT / f"speech_{y}-{m:02d}.json"

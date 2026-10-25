@@ -10,6 +10,17 @@ import requests
 URL = "https://kokkai.ndl.go.jp/api/speech"
 PER_PAGE = 100     # 発言検索の1回あたりの上限
 INTERVAL = 2.0     # リクエストの間隔(秒)。並列にはしない
+# 問い合わせのたびに送る名乗り(User-Agent)。何も指定しない Python の名乗り(python-requests/…)は、
+# 2026-10 に 403(お断り)で返された。「名前/版 (+連絡先の URL)」の形にする
+USER_AGENT = "voter-party-comovement-japan-2025-2026/0.1 (+https://github.com/Taiyo-Tanabe/voter-party-comovement-japan-2025-2026)"
+
+
+def make_session():
+    """名乗りを付けた接続を作る(取得はすべてこれを使う)"""
+    session = requests.Session()
+    session.headers["User-Agent"] = USER_AGENT
+    return session
+
 
 def _get(session, params, retries=5):
     """1ページ分を取得。失敗したら待ち時間を倍々に延ばして再試行する"""
@@ -28,7 +39,7 @@ def _get(session, params, retries=5):
 
 def fetch_month(year, month, session=None):
     """year年month月の発言を全件取得して辞書で返す"""
-    session = session or requests.Session()
+    session = session or make_session()
     last = calendar.monthrange(year, month)[1]
     params = {
         "from": f"{year}-{month:02d}-01", 
