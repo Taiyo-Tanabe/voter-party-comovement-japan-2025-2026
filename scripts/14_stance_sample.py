@@ -62,6 +62,7 @@ def allocate(sizes, n):
         if alloc[i] < size[i]:
             alloc[i] += 1
             rest -= 1
+    assert alloc.sum() == n, f"{n} 行を配り切れなかった(配れたのは {alloc.sum()} 行)"   # 黙って少なくならないように
     return pd.Series(alloc, index=sizes.index)
 
 
@@ -90,9 +91,10 @@ def main():
 
     # 組ごとに交互に tune / test(どちらにも同じような党・争点が入るように)
     # (組の中で混ぜてから組ごとに並べ、上から交互に付ける。行数が奇数の組の余りも、tune と test に交互に回る)
-    s = s.sample(frac=1, random_state=SEED).sort_values(["election", "party", "issue_hit"], kind="stable")
+    # (2つ以上の列で並べるとき、pandas は同じ組の中の順番を変えない = 混ぜた順番が残る)
+    s = s.sample(frac=1, random_state=SEED).sort_values(["election", "party", "issue_hit"])
     s["split"] = np.where(np.arange(len(s)) % 2 == 0, "tune", "test")
-    s = s.sample(frac=1, random_state=SEED + 1).reset_index(drop=True)   # 表の並びも混ぜる(党ごとに固まらないように)
+    s = s.sample(frac=1, random_state=SEED).reset_index(drop=True)       # 表の並びも混ぜる(党ごとに固まらないように)
     s.insert(0, "id", [f"S{i + 1:03d}" for i in range(len(s))])
 
     print(f"\n選んだ行: {len(s)}(調整用 {int((s['split'] == 'tune').sum())}・試験用 {int((s['split'] == 'test').sum())})")
